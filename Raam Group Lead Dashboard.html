@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Raam Group Lead Dashboard</title>
+<style>
+:root{--m:#3F0A12;--r:#C8102E;--p:#F8EEEF;--b:#D9C9CB;--t:#222;--g:#555;--hot:#C8102E;--warm:#E08A00;--cold:#2F6DB5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.45 system-ui,"Segoe UI",Arial,sans-serif;color:var(--t);background:var(--p);display:flex;min-height:100vh}
+aside{width:208px;background:var(--m);color:#fff;position:sticky;top:0;height:100vh;flex:none;display:flex;flex-direction:column}
+.logo{padding:20px 16px;font-weight:800;letter-spacing:3px;font-size:17px}.logo small{display:block;font-weight:400;letter-spacing:0;opacity:.7;font-size:11px}
+aside button{display:flex;gap:10px;align-items:center;width:100%;min-height:48px;background:none;border:0;border-left:4px solid transparent;color:#fff;padding:0 14px;font:inherit;text-align:left;cursor:pointer}
+aside button.on{background:#ffffff1a;border-color:var(--r)}
+:focus-visible{outline:3px solid #E08A00;outline-offset:2px}
+main{flex:1;min-width:0}.band{height:7px;background:repeating-linear-gradient(115deg,#111 0 10px,var(--r) 10px 20px)}
+.top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;background:var(--m);color:#fff}
+.top .mlogo{display:none;font-weight:800;letter-spacing:2px}.top .sp{flex:1}
+#tick{background:#fff;border-bottom:1px solid var(--b);padding:6px 16px;font:12px ui-monospace,Consolas,monospace;color:var(--g);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#app{padding:16px;max-width:1200px;margin:auto}
+h1{margin:0 0 4px;font-size:22px;color:var(--m)}h2{font-size:16px;margin:0 0 8px;color:var(--m)}.help{color:var(--g);font-size:13px;margin:0 0 12px}
+.card{background:#fff;border:1px solid var(--b);border-radius:14px;padding:16px;box-shadow:0 1px 4px #3f0a1214;margin-bottom:14px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.kpis{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.kpi b{font-size:26px;display:block}.kpi small{color:var(--g)}.dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px}
+.g{background:#2e9e5b}.a{background:#E08A00}.r{background:#C8102E}
+.btn,select,input[type=text],input[type=tel],input[type=number],input[type=search]{min-height:44px;border-radius:10px;border:1px solid var(--b);padding:0 12px;font:inherit;background:#fff;color:var(--t)}
+.btn{background:var(--r);color:#fff;border:0;font-weight:700;cursor:pointer;padding:0 16px}.btn.alt{background:#fff;color:var(--m);border:1px solid var(--m)}.btn.sm{min-height:44px}
+.top .btn,.top select{min-height:44px}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:760px}th{background:var(--m);color:#fff;text-align:left;padding:10px;font-size:13px}td{padding:10px;border-bottom:1px solid var(--b)}tbody tr:nth-child(even){background:var(--p)}tbody tr.cl{cursor:pointer}
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;color:#fff;font-weight:700;font-size:12px}
+.bar{height:14px;background:#eee;border-radius:7px;overflow:hidden}.bar i{display:block;height:100%}.row{display:flex;align-items:center;gap:8px;margin:6px 0}.row span:first-child{width:130px;font-size:13px;flex:none}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+@keyframes fl{from{background:#ffe08a}}.flash{animation:fl 1.2s}
+#dr{position:fixed;top:0;right:0;height:100%;width:min(480px,100%);background:#fff;box-shadow:-4px 0 20px #0004;transform:translateX(105%);transition:.25s;overflow:auto;z-index:20;padding:18px}#dr.open{transform:none}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 14px}.opt{color:#C8102E;font-weight:600;min-height:48px;padding:0 16px;border-radius:12px;border:2px solid var(--b);background:#fff;font:inherit;cursor:pointer}.opt.on{border-color:var(--r);background:#C8102E;color:#fff;font-weight:700}
+label.f{display:block;font-weight:600;margin-top:10px}label.f input,label.f select{display:block;width:100%;margin-top:4px}
+.err{color:#b00020;font-weight:600;margin:8px 0}.banner{background:var(--r);color:#fff;padding:12px;border-radius:12px;margin-bottom:10px;font-weight:600}
+mark{background:#ffe08a;padding:0 3px;border-radius:4px}.chip{font-size:12px;background:var(--p);border:1px solid var(--b);border-radius:99px;padding:2px 8px;margin-left:4px}
+.msg{border-left:5px solid var(--b);padding:8px 12px;margin:8px 0;background:#fff;border-radius:8px}.tl div{border-left:2px solid var(--b);padding:2px 0 8px 10px;font-size:13px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--m);color:#fff;padding:10px 18px;border-radius:99px;z-index:30;display:none}
+footer{text-align:center;font-size:12px;color:var(--g);padding:10px 10px 80px}
+@media(max-width:800px){body{flex-direction:column}aside{position:fixed;bottom:0;top:auto;height:auto;width:100%;flex-direction:row;z-index:10}.logo{display:none}aside button{flex-direction:column;justify-content:center;gap:0;font-size:11px;padding:4px 0;text-align:center;border-left:0;border-top:3px solid transparent}aside button.on{border-top-color:var(--r)}.top .mlogo{display:block}#app{padding:12px}}
+</style></head><body>
+<aside><div class="logo">RAAM GROUP<small>Lead Management</small></div><nav id="nav" style="display:contents"></nav></aside>
+<main><div class="band"></div>
+<div class="top"><span class="mlogo">RAAM GROUP</span><span id="clock"></span><span class="sp"></span>
+<select id="simk" aria-label="Lead type"><option value="">Random</option><option>Website</option><option>Portal</option><option>Phone call</option><option>Meta Ad</option><option value="Reply">WhatsApp reply (dormant)</option></select>
+<button class="btn" id="simb">+ Simulate new lead</button>
+<label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="auto" style="width:22px;height:22px"> Auto-simulate</label></div>
+<div id="tick">Automation log: waiting…</div>
+<div id="app"></div>
+<footer>Prototype with simulated data. Not connected to live systems.</footer></main>
+<div id="dr" role="dialog" aria-label="Lead details"></div><div id="toast"></div>
+<script>
+/* ===== CONFIG ===== */
+const DEF={t7:15,t30:10,t2:2,finOk:10,finNeed:5,trade:10,quote:15,cfg:10,views:5,open:5,srcA:20,srcB:15,srcC:10,srcD:5,near:10,dm:5,hot:76,warm:51};
+const WL={t7:'Buy within 7 days',t30:'Buy in 8–30 days',t2:'Just researching',finOk:'Cash / pre-approved loan',finNeed:'Needs dealership finance',trade:'Trade-in details shared',quote:'Price quote / test drive',cfg:'Configurator completed',views:'3+ pages or 3 min on pricing',open:'Opened message / clicked link',srcA:'Source: walk-in / inbound call',srcB:'Source: website / WhatsApp',srcC:'Source: portals',srcD:'Source: Meta / Instagram',near:'Within 10 km',dm:'Decision-maker confirmed',hot:'HOT starts at',warm:'WARM starts at'};
+let W={...DEF},APPROVE=true,QUIET=true,AUTO=false;
+const REPS=['Anil Reddy','Sneha Rao','Imran Khan','Divya Menon','Ravi Teja'],MGR='Suresh Naidu';
+const STAGES=['New','Contacted','Appointment set','Test drive done','Booked'];
+const MODELS=[['MG Astor','MG'],['MG Hector','MG'],['MG Windsor EV','MG'],['Toyota Glanza','Toyota'],['Toyota Hyryder','Toyota'],['Toyota Fortuner','Toyota']];
+const TC={Hot:'#C8102E',Warm:'#E08A00',Cold:'#2F6DB5'},TN={Hot:'HOT',Warm:'WARM',Cold:'NURTURE'};
+const CL={500:'Hyderabad',506:'Warangal',505:'Karimnagar',411:'Pune'},NEAR=new Set(['500081','500032','500034','500016','500033']);
+const PINS=['500081','500032','500034','500016','506002','505001','500072','411001','500049'];
+const FN=['Arjun','Priya','Rahul','Lakshmi','Venkat','Anjali','Mohammed','Kavya','Suresh','Neha','Srinivas','Pooja','Karthik','Fatima','Harish','Swathi'],LN=['Sharma','Reddy','Naidu','Khan','Rao','Patel','Iyer','Goud','Verma','Kulkarni','Singh','Chowdary'];
+const SRCS=['Walk-in','Phone call','Website','WhatsApp','Portal','Meta Ad'];
+const TPL={Hot_digital:"Hi {name}, this is {rep} from Raam {brand}. Yes, the {model} is available at our showroom right now! {finance_line} I can hold a test drive for you at {slot1} or {slot2}. Which works better?",
+Hot_walk:"Hi {name}, thank you for visiting Raam {brand} today! Great choice with the {model}. {finance_line} Your on-road price breakdown is attached, and I can book your test drive for {slot1} or {slot2}.",
+Warm:"Hi {name}, thanks for your interest in the {model} at Raam {brand}. Here is a short video walk-around and the current offers. Would a quick call today or tomorrow help you compare variants?",
+Cold:"Hi {name}, thanks for looking at the {model}. Here's an easy guide to help you choose the right variant for your budget. No rush: we're here when you're ready.",
+Ack:"Hi {name}, thanks for reaching out to Raam {brand}! Our showroom is closed right now, but your enquiry for the {model} is locked in. Can I reserve a test drive tomorrow at 10:30 AM or 4:00 PM?"};
+/* ===== DATA ===== */
+let LEADS=[],MSGS=[],LOG=[],seq=1000,mseq=0,cur=null,page='ov',F={tier:'',src:'',st:'',rep:'',q:''},WF={};
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rnd=n=>Math.floor(Math.random()*n),pick=a=>a[rnd(a.length)],byId=id=>LEADS.find(l=>l.id==id);
+let clk={base:(()=>{const d=new Date();d.setHours(10,42,0,0);return d.getTime()})(),t0:Date.now(),speed:20};
+const now=()=>clk.base+(Date.now()-clk.t0)*clk.speed;
+function setClock(speed,base){clk={base:base==null?now():base,t0:Date.now(),speed}}
+const hm=t=>new Date(t).toLocaleTimeString('en-GB',{hour12:false});
+const ago=t=>{const m=(now()-t)/6e4;return m<1?Math.floor(m*60)+'s':m<60?Math.floor(m)+'m':m<1440?Math.floor(m/60)+'h':Math.floor(m/1440)+'d'};
+const quiet=()=>{const h=new Date(now()).getHours();return QUIET&&(h<8||h>=21)};
+const mask=p=>p.slice(0,2)+'XXXX'+p.slice(6),first=n=>n.split(' ')[0],brand=l=>MODELS.find(m=>m[0]===l.model)[1];
+const status=l=>l.lost?'Lost':STAGES[l.st];
+const badge=t=>`<span class="badge" style="background:${TC[t]}">${TN[t]}</span>`;
+function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2600)}
+function log(t){LOG.unshift({t:now(),txt:t});LOG.length>60&&LOG.pop();$('#tick').textContent='⚙ '+hm(now())+'  '+t}
+function ev(l,txt){l.ev.push({t:now(),txt})}
+/* ===== SCORING ENGINE ===== */
+function score(l){const it=[],add=(k,t)=>W[k]&&it.push([t,W[k]]);
+ l.tl==='w7'?add('t7','Plans to buy within 7 days'):l.tl==='m30'?add('t30','Plans to buy in 8–30 days'):add('t2','Just researching');
+ l.fin==='cash'?add('finOk','Cash / loan pre-approved'):l.fin==='need'&&add('finNeed','Needs dealership finance');
+ l.trade&&add('trade','Shared trade-in details');l.quote&&add('quote','Price quote / test drive');l.cfg&&add('cfg','Completed configurator');
+ l.views&&add('views','Viewed 3+ pages / long on pricing');l.open&&add('open','Opened message / clicked link');
+ add({'Walk-in':'srcA','Phone call':'srcA',Website:'srcB',WhatsApp:'srcB',Portal:'srcC','Meta Ad':'srcD'}[l.src],'Source: '+l.src);
+ l.near&&add('near','Within 10 km of showroom');l.dm&&add('dm','Key decision-maker confirmed');
+ const d=Math.floor((now()-l.lastAct)/864e5/7)*5;if(d>0&&l.st<2)it.push(['Inactivity decay ('+d/5*7+'+ days)',-d]);
+ return it}
+function rescore(l){l.items=score(l);l.sc=Math.max(0,Math.min(100,l.items.reduce((s,x)=>s+x[1],0)));l.tier=l.sc>=W.hot?'Hot':l.sc>=W.warm?'Warm':'Cold'}
+/* ===== MESSAGE ENGINE ===== */
+function fill(key,l){const fl=l.quote?'I will share the exact on-road price.':l.trade?'We will also share a trade-in valuation for your car.':l.fin==='need'?'I can arrange easy EMI options for you.':'Happy to help with any questions.';
+ const d={name:first(l.name),model:l.model,brand:brand(l),rep:first(l.rep||REPS[0]),slot1:'11:30 AM',slot2:'4:00 PM',finance_line:fl,showroom:l.cluster};
+ return TPL[key].replace(/\{(\w+)\}/g,(_,k)=>d[k])}
+const msg=(l,text,status,t)=>MSGS.unshift({id:++mseq,lid:l.id,tier:l.tier,ch:l.src==='Phone call'?'SMS':'WhatsApp',text,status,t:t||now()});
+function sendMsgs(l){
+ if(!l.consent){ev(l,'No consent: message blocked');log(`Lead #${l.id} flagged No consent → no message sent`);return}
+ const key=l.tier==='Hot'?(l.src==='Walk-in'?'Hot_walk':'Hot_digital'):l.tier,st=APPROVE?'Pending approval':'Sent';
+ if(quiet()&&l.src!=='Walk-in'){msg(l,fill('Ack',l),'Sent');msg(l,fill(key,l),'Queued');ev(l,'After hours: acknowledgement sent, message queued for 8 AM')}
+ else{msg(l,fill(key,l),st);ev(l,'Message drafted ('+st+')')}}
+/* ===== LEAD CREATION / PIPELINE ===== */
+function mkLead(r,created,st){const t=created;
+ const l={id:++seq,name:r.name,phone:r.phone,src:r.src,model:r.model,pin:r.pin,cluster:CL[r.pin.slice(0,3)]||'Outside territory',tl:r.tl,fin:r.fin,trade:!!r.trade,quote:!!r.quote,cfg:!!r.cfg,views:!!r.views,open:!!r.open,dm:!!r.dm,near:r.near!=null?r.near:NEAR.has(r.pin),consent:r.consent!==false,created:t,lastAct:t,st:st||0,lost:false,rep:'',merged:false,ev:[],heard:r.heard||'',fresh:Date.now()};
+ l.ev.push({t,txt:'Enquiry received via '+l.src});
+ if(l.quote)l.ev.push({t,txt:'Price quote / test drive signal'});if(l.cfg)l.ev.push({t,txt:'Completed online configurator'});if(l.trade)l.ev.push({t,txt:'Trade-in details shared'});
+ rescore(l);return l}
+function pickRep(){const c=r=>LEADS.filter(l=>l.rep===r&&l.st===0&&!l.lost);return REPS.map(r=>[r,c(r).filter(l=>l.tier==='Hot').length*10+c(r).length]).sort((a,b)=>a[1]-b[1])[0][0]}
+function ingest(r){
+ if(!r.name||!r.name.trim())return{err:'Please enter the customer name'};
+ if(!/^[6-9]\d{9}$/.test(r.phone))return{err:'Enter a valid 10-digit Indian mobile number'};
+ if(!/^\d{6}$/.test(r.pin))return{err:'Enter a 6-digit pincode'};
+ const t=now(),ex=LEADS.find(x=>x.phone===r.phone&&t-x.created<30*864e5);
+ if(ex){const rk={w7:3,m30:2,later:1},fk={cash:3,need:2,unsure:1};
+  ['trade','quote','cfg','views','open','dm','near'].forEach(k=>ex[k]=ex[k]||!!r[k]);
+  if(rk[r.tl]>rk[ex.tl])ex.tl=r.tl;if(fk[r.fin]>fk[ex.fin])ex.fin=r.fin;
+  ex.lastAct=t;ex.merged=true;ex.fresh=Date.now();ev(ex,`Merged new ${r.src} enquiry (signals added once)`);rescore(ex);
+  log(`Lead #${ex.id} duplicate phone → merged → score ${ex.sc} ${TN[ex.tier]}`);return{lead:ex,merged:true}}
+ const l=mkLead(r,t,r.st||0);l.rep=pickRep();if(l.st>=1){l.contactedAt=t;l.lastAct=t}
+ LEADS.unshift(l);log(`Lead #${l.id} validated → scored ${l.sc} → ${TN[l.tier]} → assigned ${l.rep}`);
+ sendMsgs(l);log(`Lead #${l.id} message ${l.consent?'drafted':'blocked (no consent)'} → SLA timer started`);
+ return{lead:l,merged:false}}
+function randRaw(src){const m=pick(MODELS),hi=src==='Walk-in'||src==='Phone call';
+ return{name:pick(FN)+' '+pick(LN),phone:pick('6789')+Array.from({length:9},()=>rnd(10)).join(''),src,model:m[0],pin:pick(PINS),tl:pick(['w7','m30','m30','later','later']),fin:pick(['cash','need','need','unsure']),trade:Math.random()<.3,quote:Math.random()<(hi?.6:.3),cfg:src==='Website'&&Math.random()<.5,views:Math.random()<.5,open:Math.random()<.3,dm:Math.random()<.5,consent:Math.random()>.05}}
+function simulate(k){
+ if(k==='Reply'){const d=LEADS.filter(l=>l.st<2&&!l.lost);const l=d.sort((a,b)=>a.lastAct-b.lastAct)[0];if(!l)return;
+  l.open=true;l.lastAct=now();ev(l,'Opened WhatsApp message: Re-ignited intent');rescore(l);log(`🔥 Re-ignited intent: Lead #${l.id} ${l.name} → score ${l.sc} ${TN[l.tier]}`);toast('Re-ignited intent: '+l.name);refresh();return}
+ const src=k||pick(['Website','Portal','Phone call','Meta Ad','Website','Portal']),r=randRaw(src);
+ if(Math.random()<.15&&LEADS.length){const o=pick(LEADS);r.phone=o.phone;r.name=o.name}
+ const res=ingest(r);toast(res.merged?'Merged with existing lead':'New lead: '+res.lead.name);refresh()}
+/* ===== SLA ENGINE ===== */
+const TGT={Hot:5,Warm:15};
+const open_=()=>LEADS.filter(l=>l.st===0&&!l.lost&&l.tier!=='Cold');
+const rem=l=>TGT[l.tier]*6e4-(now()-l.created);
+const mmss=ms=>{const s=Math.abs(Math.floor(ms/1e3));return(ms<0?'+':'')+String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+function breaches(){return LEADS.filter(l=>l.tier!=='Cold'&&!l.lost&&(l.st===0?rem(l)<0:(l.contactedAt-l.created)>TGT[l.tier]*6e4))}
+function slaTick(){open_().filter(l=>l.tier==='Hot'&&now()-l.created>10*6e4&&!l.esc).forEach(l=>{l.esc=true;ev(l,'Escalated to '+MGR);log(`🚨 Lead #${l.id} uncontacted 10 min → escalated to ${MGR}`);toast('Escalated to Sales Manager: '+l.name)})}
+/* ===== UI RENDERERS ===== */
+const PG={ov:['Overview','📊'],feed:['Lead Feed','📋'],walk:['Walk-in','🚶'],msg:['Messages','💬'],sla:['SLA','⏱'],set:['Settings','⚙']};
+function go(p){page=p;$('#nav').innerHTML=Object.entries(PG).map(([k,v])=>`<button class="${k===p?'on':''}" onclick="go('${k}')"><span>${v[1]}</span><span>${v[0]}</span></button>`).join('');
+ ({ov:vOv,feed:vFeed,walk:vWalk,msg:vMsg,sla:vSla,set:vSet})[p]();scrollTo(0,0)}
+function refresh(){if(page==='feed')rows();else if(page==='ov')vOv();else if(page==='msg')vMsg();else if(page==='sla')vSla()}
+function bars(data,max,colors){return data.map(([n,v],i)=>`<div class="row"><span>${n}</span><div class="bar" style="flex:1"><i style="width:${max?v/max*100:0}%;background:${colors[i%colors.length]}"></i></div><b>${v}</b></div>`).join('')}
+function kpis(){const n=LEADS.length||1,c=LEADS.filter(l=>l.st>=1),a=LEADS.filter(l=>l.st>=2),s=LEADS.filter(l=>l.st>=3);
+ const resp=c.length?c.reduce((x,l)=>x+(l.contactedAt-l.created),0)/c.length/6e4:0,unc=LEADS.filter(l=>l.st===0&&!l.lost).length/n*100;
+ const cr=c.length/n*100,ar=c.length?a.length/c.length*100:0,sr=a.length?s.length/a.length*100:0;
+ const S=(v,g,am,lo)=>lo?(v<=g?'g':v<=am?'a':'r'):(v>=g?'g':v>=am?'a':'r');
+ return[['Speed to first response',resp.toFixed(1)+' min','Target: under 60 sec AI / 5 min human',S(resp,5,15,1)],['Lead contact rate',cr.toFixed(0)+'%','Target: above 80%',S(cr,80,60)],['Appointment set rate',ar.toFixed(0)+'%','Target: above 45%',S(ar,45,30)],['Showroom show rate',sr.toFixed(0)+'%','Target: above 65%',S(sr,65,45)],['Leads not contacted',unc.toFixed(0)+'%','Target: under 2% (baseline 40%)',S(unc,2,15,1)]]}
+function vOv(){const n=LEADS.length,bk=LEADS.filter(l=>l.st>=4).length,cv=n?bk/n*100:0,pr=Math.max(0,Math.min(100,(cv-8)/4*100));
+ const fn=[['Leads',n],['Contacted',LEADS.filter(l=>l.st>=1).length],['Appointments',LEADS.filter(l=>l.st>=2).length],['Test drives',LEADS.filter(l=>l.st>=3).length],['Bookings',bk]];
+ const tc=['Hot','Warm','Cold'].map(t=>[t,LEADS.filter(l=>l.tier===t).length]),sc=SRCS.map(s=>[s,LEADS.filter(l=>l.src===s).length]);
+ $('#app').innerHTML=`<h1>Overview</h1><p class="help">How well are we responding to enquiries? Green = on target, amber = watch, red = act now.</p>
+ <div class="grid kpis">${kpis().map(k=>`<div class="card kpi"><small>${k[0]}</small><b><span class="dot ${k[3]}"></span>${k[1]}</b><small>${k[2]}</small></div>`).join('')}</div>
+ <div class="card"><h2>Conversion: 8% → 12%</h2><p class="help">Goal: 80 → 120 vehicles per month (about 1,000 leads). Current booking rate on this demo data: <b>${cv.toFixed(1)}%</b></p>
+ <div class="bar" style="height:20px"><i style="width:${pr}%;background:var(--r)"></i></div><p class="help">Baseline 8% · Target 12% · ${pr.toFixed(0)}% of the way</p></div>
+ <div class="grid"><div class="card"><h2>Funnel</h2>${bars(fn,n,['#3F0A12','#7a1a26','#C8102E','#E08A00','#2e9e5b'])}</div>
+ <div class="card"><h2>Lead tiers</h2><div class="bar" style="height:26px;display:flex">${tc.map(t=>`<i style="width:${n?t[1]/n*100:0}%;background:${TC[t[0]]}"></i>`).join('')}</div>
+ <p>${tc.map(t=>`${badge(t[0])} <b>${t[1]}</b>`).join(' &nbsp; ')}</p><h2>Leads by source</h2>${bars(sc,Math.max(1,...sc.map(x=>x[1])),['#C8102E'])}</div></div>
+ <div class="card"><h2>Automation log</h2>${LOG.slice(0,12).map(x=>`<div style="font:12px ui-monospace,Consolas,monospace;padding:2px 0">${hm(x.t)} ${esc(x.txt)}</div>`).join('')||'<p class="help">Nothing yet. Press Simulate new lead.</p>'}</div>`}
+function selOpts(arr,v,all){return`<option value="">${all}</option>`+arr.map(x=>`<option ${x===v?'selected':''}>${x}</option>`).join('')}
+function vFeed(){$('#app').innerHTML=`<h1>Live Lead Feed</h1><p class="help">Newest first. Tap a lead for score details and quick actions.</p>
+ <div class="filters"><input type="search" id="fq" placeholder="Search name or phone" aria-label="Search" value="${esc(F.q)}"><select id="ft" aria-label="Tier">${selOpts(['Hot','Warm','Cold'],F.tier,'All tiers')}</select><select id="fs" aria-label="Source">${selOpts(SRCS,F.src,'All sources')}</select><select id="fst" aria-label="Status">${selOpts([...STAGES,'Lost'],F.st,'All statuses')}</select><select id="fr" aria-label="Rep">${selOpts(REPS,F.rep,'All reps')}</select></div>
+ <div class="card tw"><table><thead><tr><th>Name</th><th>Phone</th><th>Source</th><th>Model</th><th>Score</th><th>Tier</th><th>Status</th><th>Rep</th><th>Age</th></tr></thead><tbody id="rows"></tbody></table></div>`;
+ [['fq','q'],['ft','tier'],['fs','src'],['fst','st'],['fr','rep']].forEach(([i,k])=>$('#'+i).oninput=e=>{F[k]=e.target.value;rows()});rows()}
+function rows(){const b=$('#rows');if(!b)return;const q=F.q.toLowerCase();
+ const L=LEADS.filter(l=>(!F.tier||l.tier===F.tier)&&(!F.src||l.src===F.src)&&(!F.st||status(l)===F.st)&&(!F.rep||l.rep===F.rep)&&(!q||l.name.toLowerCase().includes(q)||l.phone.includes(q)));
+ b.innerHTML=L.map(l=>`<tr class="cl ${Date.now()-l.fresh<1200?'flash':''}" tabindex="0" onclick="openL(${l.id})" onkeydown="if(event.key==='Enter')openL(${l.id})"><td><b>${esc(l.name)}</b>${l.merged?'<span class="chip">Merged</span>':''}${l.consent?'':'<span class="chip">No consent</span>'}</td><td>${mask(l.phone)}</td><td>${l.src}</td><td>${l.model}</td><td><b>${l.sc}</b></td><td>${badge(l.tier)}</td><td>${status(l)}</td><td>${l.rep}</td><td>${ago(l.created)}</td></tr>`).join('')||'<tr><td colspan="9">No leads match these filters.</td></tr>'}
+function openL(id){cur=id;drawer();$('#dr').classList.add('open')}
+function drawer(){const l=byId(cur);if(!l)return;const ms=MSGS.filter(m=>m.lid===l.id);
+ $('#dr').innerHTML=`<button class="btn alt sm" onclick="$('#dr').classList.remove('open')">✕ Close</button>
+ <h1 style="margin-top:10px">${esc(l.name)}</h1><p class="help">${mask(l.phone)} · ${l.model} · ${l.cluster} (${l.pin}) · ${l.src}<br>Rep: ${l.rep} · Status: <b>${status(l)}</b> ${l.merged?'<span class="chip">Merged with existing lead</span>':''}</p>
+ <div class="card"><h2>Why this score: ${l.sc}/100 ${badge(l.tier)}</h2>${l.items.map(([t,p])=>`<div class="row"><span style="width:170px">${t}</span><div class="bar" style="flex:1"><i style="width:${Math.abs(p)/20*100}%;background:${p<0?'#777':TC[l.tier]}"></i></div><b>${p>0?'+':''}${p}</b></div>`).join('')}</div>
+ <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">${[['call','📞 Call'],['contacted','Mark contacted'],['td','Book test drive'],['tdone','Test drive done'],['booked','Mark booked'],['lost','Mark lost']].map(a=>`<button class="btn ${a[0]==='lost'?'alt':''} sm" onclick="act(${l.id},'${a[0]}')">${a[1]}</button>`).join('')}</div>
+ <div class="card"><h2>Messages sent</h2>${ms.map(m=>`<div class="msg" style="border-color:${TC[m.tier]}"><small>${m.ch} · ${m.status}</small><br>${esc(m.text)}</div>`).join('')||'<p class="help">No messages (no consent or none yet).</p>'}</div>
+ <div class="card tl"><h2>Activity timeline</h2>${[...l.ev].reverse().map(e=>`<div><b>${hm(e.t)}</b> ${esc(e.txt)}</div>`).join('')}</div>`}
+function act(id,a){const l=byId(id),c=()=>{if(l.st<1){l.st=1;l.contactedAt=now()}l.lastAct=now()};
+ if(a==='call'){c();ev(l,'Call placed by '+l.rep)}else if(a==='contacted'){c();ev(l,'Marked contacted')}
+ else if(a==='td'){c();l.st=Math.max(l.st,2);l.quote=true;ev(l,'Test drive booked')}
+ else if(a==='tdone'){c();l.st=Math.max(l.st,3);l.quote=true;ev(l,'Test drive completed')}
+ else if(a==='booked'){c();l.st=4;ev(l,'Booked 🎉')}else{l.lost=true;ev(l,'Marked lost')}
+ rescore(l);log(`Lead #${l.id} ${a} by ${l.rep} → ${status(l)}`);drawer();refresh();toast('Updated: '+status(l))}
+/* Walk-in */
+const G=[['tl','1. When do they plan to buy?',[['w7','Within 7 days'],['m30','8–30 days'],['later','Just looking']]],['fin','2. Payment plan?',[['cash','Cash / pre-approved loan'],['need','Needs finance'],['unsure','Unsure']]],['trade','3. Trade-in vehicle?',[['1','Yes, details shared'],['0','No']]],['td','4. Test drive?',[['taken','Taken'],['req','Requested'],['no','No']]],['quote','5. Price quote asked?',[['1','Yes'],['0','No']]],['dm','6. Who decides?',[['1','Present and deciding'],['0','Needs family']]],['near','7. Lives within 10 km? (optional, auto from pincode)',[['1','Yes'],['0','No']]],['heard','8. How did they hear about us? (optional)',[['Referral','Referral'],['Ad or portal','Ad or portal'],['Passing by','Passing by']]]];
+function vWalk(){WF={};$('#app').innerHTML=`<h1>Walk-in Entry</h1><p class="help">Takes under 30 seconds. Type the name, mobile and pincode, then tap the answers. The system picks the bracket.</p>
+ <div class="card"><label class="f">Customer name<input type="text" id="wn" autocomplete="off"></label><label class="f">Mobile number (10 digits)<input type="tel" id="wp" maxlength="10" inputmode="numeric"></label><label class="f">Pincode<input type="tel" id="wz" maxlength="6" inputmode="numeric"></label>
+ <label class="f">Model of interest<select id="wm">${MODELS.map(m=>`<option>${m[0]}</option>`).join('')}</select></label>
+ ${G.map(g=>`<div class="f" style="margin-top:12px;font-weight:600">${g[1]}</div><div class="opts" data-k="${g[0]}">${g[2].map(o=>`<button type="button" class="opt" data-v="${o[0]}">${o[1]}</button>`).join('')}</div>`).join('')}
+ <label style="display:flex;gap:10px;align-items:center;margin:10px 0"><input type="checkbox" id="wc" checked style="width:24px;height:24px"> Customer agrees to WhatsApp / SMS updates (if unticked, no message is sent)</label>
+ <div class="err" id="we"></div><button class="btn" style="width:100%;min-height:52px;font-size:17px" onclick="subWalk()">Score this customer</button></div>`}
+document.addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b)return;const g=b.parentElement;g.querySelectorAll('.opt').forEach(x=>x.classList.remove('on'));b.classList.add('on');WF[g.dataset.k]=b.dataset.v});
+function subWalk(){const miss=['tl','fin','trade','td','quote','dm'].find(k=>!WF[k]);
+ const r={name:$('#wn').value,phone:$('#wp').value.trim(),pin:$('#wz').value.trim(),src:'Walk-in',model:$('#wm').value,tl:WF.tl,fin:WF.fin,trade:WF.trade==='1',quote:WF.quote==='1'||WF.td!=='no',dm:WF.dm==='1',near:WF.near==null?null:WF.near==='1',heard:WF.heard,consent:$('#wc').checked,st:WF.td==='taken'?3:1};
+ if(!r.name.trim()||!/^[6-9]\d{9}$/.test(r.phone)||!/^\d{6}$/.test(r.pin)){const v=ingest(r);$('#we').textContent=v.err;return}
+ if(miss){$('#we').textContent='Please answer question '+({tl:1,fin:2,trade:3,td:4,quote:5,dm:6}[miss]);return}
+ const res=ingest(r);
+ const l=res.lead,m=MSGS.find(x=>x.lid===l.id);
+ $('#app').innerHTML=`<h1>Walk-in logged ✔</h1><div class="card"><h2 style="font-size:20px">${esc(l.name)}: score <b style="font-size:34px">${l.sc}</b> ${badge(l.tier)}</h2>
+ ${res.merged?'<p><span class="chip">Matched an existing lead: merged</span></p>':''}${l.consent?'':'<p><span class="chip">No consent: no message will be sent</span></p>'}
+ ${l.items.map(([t,p])=>`<div class="row"><span style="width:200px">${t}</span><div class="bar" style="flex:1"><i style="width:${Math.abs(p)/20*100}%;background:${TC[l.tier]}"></i></div><b>${p>0?'+':''}${p}</b></div>`).join('')}
+ <h2 style="margin-top:14px">AI follow-up message</h2><div class="msg" style="border-color:${TC[l.tier]}">${m&&l.consent?esc(m.text)+'<br><small>Status: '+m.status+'</small>':'Not sent (no consent).'}</div>
+ <button class="btn" onclick="vWalk()">Log another customer</button> <button class="btn alt" onclick="go('feed')">See in Live Feed</button></div>`}
+/* Messages */
+function setAp(v){APPROVE=v;go(page)}
+function mAct(id,a){const m=MSGS.find(x=>x.id===id),l=byId(m.lid);
+ if(a==='ok'){m.status='Sent';ev(l,'Message approved and sent')}else if(a==='no')m.status='Rejected';else{const t=prompt('Edit message',m.text);if(t)m.text=t}
+ log(`Message #${id} ${a==='ok'?'approved':a==='no'?'rejected':'edited'}`);vMsg()}
+function vMsg(){$('#app').innerHTML=`<h1>Message Centre</h1><p class="help">Every AI-drafted message. Nothing is really sent in this demo.</p>
+ <div class="card"><label style="display:flex;gap:10px;align-items:center"><input type="checkbox" style="width:24px;height:24px" ${APPROVE?'checked':''} onchange="setAp(this.checked)"> <b>Approve before sending</b> (ON = messages wait for a human)</label></div>
+ <div class="card"><h2>Messages (${MSGS.length})</h2>${MSGS.slice(0,40).map(m=>{const l=byId(m.lid);return`<div class="msg" style="border-color:${TC[m.tier]}"><b>${esc(l?l.name:'?')}</b> ${badge(m.tier)} <span class="chip">${m.ch}</span><span class="chip">${m.status}</span> <small>${hm(m.t)}</small><br>${esc(m.text)}${m.status==='Pending approval'?`<div style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" onclick="mAct(${m.id},'ok')">Approve</button><button class="btn alt sm" onclick="mAct(${m.id},'edit')">Edit</button><button class="btn alt sm" onclick="mAct(${m.id},'no')">Reject</button></div>`:''}</div>`}).join('')||'<p class="help">No messages yet.</p>'}</div>
+ <div class="grid"><div class="card"><h2>Template library</h2>${Object.entries(TPL).map(([k,t])=>`<p><b>${k.replace('_',' · ')}</b><br>${esc(t).replace(/\{(\w+)\}/g,'<mark>{$1}</mark>')}</p>`).join('')}</div>
+ <div class="card"><h2>Rules</h2><ul><li>First WhatsApp message must be a pre-approved template (AI fills only the variables).</li><li>Free-form AI replies unlock only after the customer replies (24-hour window).</li><li>SMS needs pre-registered templates.</li><li>Respect consent and DND. No consent = no message.</li><li>Quiet hours 9 PM to 8 AM: an immediate "We've received your enquiry" note is sent and the main message is queued for 8 AM.</li></ul></div></div>`}
+/* SLA */
+function vSla(){const o=open_(),esc_=o.filter(l=>l.esc),br=breaches().slice(0,10);
+ const wl=REPS.map(r=>{const a=LEADS.filter(l=>l.rep===r),c=a.filter(l=>l.contactedAt),h=a.filter(l=>l.tier==='Hot'),hb=h.filter(l=>l.st>=4).length;return{r,n:a.length,u:a.filter(l=>l.st===0&&!l.lost).length,rt:c.length?c.reduce((s,l)=>s+l.contactedAt-l.created,0)/c.length/6e4:0,h:h.length,hb,avg:a.length?a.reduce((s,l)=>s+l.sc,0)/a.length:0}}),gm=LEADS.length?LEADS.reduce((s,l)=>s+l.sc,0)/LEADS.length:0;
+ $('#app').innerHTML=`<h1>SLA and Escalation</h1><p class="help">HOT: contact in 5 min (escalate to ${MGR} at 10 min). WARM: first touch in 15 min, outreach in 1 hour. COLD: automated drip only.</p>
+ ${esc_.map(l=>`<div class="banner">🚨 ${esc(l.name)} (${l.model}) has waited ${ago(l.created)}. Escalated to ${MGR}, Sales Manager. Assigned: ${l.rep}</div>`).join('')}
+ <div class="card"><h2>Countdowns: uncontacted Hot and Warm (${o.length})</h2>${o.sort((a,b)=>rem(a)-rem(b)).map(l=>`<div class="row"><span style="width:150px"><b>${esc(l.name)}</b></span>${badge(l.tier)}<b style="color:${rem(l)<0?'#C8102E':TC[l.tier]};font-size:20px;min-width:80px">${mmss(rem(l))}</b><span style="flex:1;font-size:13px">${l.rep}</span><button class="btn sm" onclick="act(${l.id},'contacted')">Mark contacted</button></div>`).join('')||'<p class="help">All Hot and Warm leads are contacted. 🎉</p>'}</div>
+ <div class="grid"><div class="card"><h2>Breached SLAs</h2>${br.map(l=>`<div class="row"><span style="width:140px">${esc(l.name)}</span>${badge(l.tier)}<span style="font-size:13px">${l.st===0?'Not contacted yet':'Slow first contact'} · ${l.rep}</span></div>`).join('')||'<p class="help">No breaches.</p>'}</div>
+ <div class="card tw"><h2>Rep workload</h2><table style="min-width:420px"><thead><tr><th>Rep</th><th>Assigned</th><th>Uncontacted</th><th>Avg response</th><th>Flag</th></tr></thead><tbody>${wl.map(w=>`<tr><td>${w.r}</td><td>${w.n}</td><td>${w.u}</td><td>${w.rt.toFixed(1)} min</td><td>${w.h>=2&&w.hb===0?'⚠ Low Hot→booking':w.avg>gm+10?'⚠ Scores unusually high':'OK'}</td></tr>`).join('')}</tbody></table></div></div>`}
+/* Settings */
+function setW(k,v){W[k]=Math.max(0,+v||0);LEADS.forEach(rescore);toast('Re-scored '+LEADS.length+' leads')}
+function vSet(){$('#app').innerHTML=`<h1>Settings</h1><p class="help">Change a weight and every lead is re-scored instantly.</p>
+ <div class="card"><h2>How it works</h2><p>Capture → Validate and dedupe → Score → Bracket → AI message → SLA tracking. Each new lead runs all six steps by itself.</p></div>
+ <div class="card"><h2>Toggles</h2><label style="display:flex;gap:10px;align-items:center;margin:8px 0"><input type="checkbox" style="width:24px;height:24px" ${APPROVE?'checked':''} onchange="APPROVE=this.checked"> Approve before sending</label>
+ <label style="display:flex;gap:10px;align-items:center;margin:8px 0"><input type="checkbox" style="width:24px;height:24px" ${QUIET?'checked':''} onchange="QUIET=this.checked"> Quiet hours (9 PM to 8 AM)</label>
+ <label class="f">Simulation speed (clock runs faster)<select onchange="setClock(+this.value)">${[1,5,20,60].map(s=>`<option value="${s}" ${s===clk.speed?'selected':''}>${s}x</option>`).join('')}</select></label>
+ <button class="btn alt" style="margin-top:10px" onclick="setClock(clk.speed,(()=>{const d=new Date(now());d.setHours(21,30,0,0);return d.getTime()})());toast('Clock set to 9:30 PM (quiet hours)')">Jump clock to 9:30 PM</button></div>
+ <div class="card"><h2>Point weights and thresholds</h2><div class="grid">${Object.keys(DEF).map(k=>`<label class="f">${WL[k]}<input type="number" min="0" max="100" value="${W[k]}" onchange="setW('${k}',this.value)"></label>`).join('')}</div>
+ <button class="btn" style="margin-top:12px" onclick="W={...DEF};LEADS.forEach(rescore);toast('Defaults restored');vSet()">Reset to defaults</button></div>`}
+/* ===== SEED AND BOOT ===== */
+function seed(){for(let i=24;i>=0;i--){
+ const age=i<3?1+Math.random()*3:i<8?20+Math.random()*600:600+Math.random()*28000,r=randRaw(pick(['Website','Portal','Portal','Phone call','Meta Ad','Meta Ad','Walk-in','WhatsApp']));
+ if(i<3){r.tl='w7';r.quote=true;r.fin='cash';r.src=pick(['Website','Phone call','Portal'])}
+ const x=Math.random(),st=i<3?0:x<.2?0:x<.45?1:x<.65?2:x<.8?3:4,l=mkLead(r,now()-age*6e4,st);
+ l.rep=REPS[i%5];l.fresh=0;
+ if(st>=1){l.contactedAt=l.created+(1+Math.random()*90)*6e4;l.lastAct=l.contactedAt;ev(l,'Contacted by '+l.rep)}
+ if(st>=2)ev(l,'Appointment set');if(st>=3)ev(l,'Test drive completed');if(st>=4)ev(l,'Booked');
+ if(st<4&&i>=3&&Math.random()<.1)l.lost=true;
+ rescore(l);LEADS.push(l);
+ if(l.consent&&i%2===0)msg(l,fill(l.tier==='Hot'?(l.src==='Walk-in'?'Hot_walk':'Hot_digital'):l.tier,l),pick(['Delivered','Read','Replied']),l.created+3e4)}
+ LEADS.sort((a,b)=>b.created-a.created)}
+$('#simb').onclick=()=>simulate($('#simk').value);
+$('#auto').onchange=e=>{AUTO=e.target.checked;toast(AUTO?'Auto-simulate ON':'Auto-simulate OFF')};
+setInterval(()=>{if(AUTO)simulate()},5000);
+let tk=0;
+setInterval(()=>{tk++;$('#clock').textContent='Showroom clock '+hm(now())+(quiet()?' · quiet hours':'');
+ if(!quiet())MSGS.filter(m=>m.status==='Queued').forEach(m=>m.status=APPROVE?'Pending approval':'Sent');
+ MSGS.forEach(m=>{if(m.status==='Sent'&&Math.random()<.1)m.status='Delivered';else if(m.status==='Delivered'&&Math.random()<.05)m.status='Read'});
+ slaTick();LEADS.forEach(l=>{if(l.st<2&&tk%10===0)rescore(l)});
+ if(page==='sla')vSla();else if(page==='feed'&&tk%2===0)rows();else if(page==='ov'&&tk%3===0)vOv()},1000);
+seed();log('Dashboard ready: '+LEADS.length+' leads loaded');go('ov');
+</script></body></html>
